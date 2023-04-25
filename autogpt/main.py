@@ -106,7 +106,6 @@ def run_auto_gpt(
     command_registry = CommandRegistry()
     command_registry.import_commands("autogpt.commands.local_gpt")
     command_registry.import_commands("autogpt.commands.analyze_code")
-    command_registry.import_commands("autogpt.commands.analyze_code_local")
     command_registry.import_commands("autogpt.commands.audio_text")
     command_registry.import_commands("autogpt.commands.execute_code")
     command_registry.import_commands("autogpt.commands.file_operations")
