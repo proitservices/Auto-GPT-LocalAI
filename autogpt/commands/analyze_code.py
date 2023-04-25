@@ -29,3 +29,23 @@ def analyze_code(code: str) -> list[str]:
     )
 
     return call_ai_function(function_string, args, description_string)
+
+
+def analyze_code_local(code: str) -> list[str]:
+    """
+    A function that takes in a string and returns a response from the local GPT API.
+
+    Parameters:
+        code (str): Code to be evaluated.
+    Returns:
+        A result string from the local GPT API. A list of suggestions to
+            improve the code.
+    """
+
+    function_string = "def analyze_code_local(code: str) -> list[str]:"
+    args = [code]
+    description_string = (
+        "Analyzes the given code locally and returns a list of suggestions for improvements."
+    )
+
+    return call_local_gpt_api(function_string, args, description_string)
