@@ -104,7 +104,7 @@ def run_auto_gpt(
     cfg.set_plugins(scan_plugins(cfg, cfg.debug_mode))
     # Create a CommandRegistry instance and scan default folder
     command_registry = CommandRegistry()
-    command_registry.import_commands("autogpt.commands.call_local_gpt_api")
+    command_registry.import_commands("autogpt.commands.local_gpt")
     command_registry.import_commands("autogpt.commands.analyze_code")
     command_registry.import_commands("autogpt.commands.audio_text")
     command_registry.import_commands("autogpt.commands.execute_code")
