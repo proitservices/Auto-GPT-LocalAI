@@ -49,6 +49,7 @@ class Workspace:
         # TODO: have this make the env file and ai settings file in the directory.
         workspace_directory = cls._sanitize_path(workspace_directory)
         workspace_directory.mkdir(exist_ok=True, parents=True)
+        print(workspace_directory)
         return workspace_directory
 
     def get_path(self, relative_path: str | Path) -> Path:

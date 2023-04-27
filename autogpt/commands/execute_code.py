@@ -124,15 +124,19 @@ def execute_shell(command_line: str) -> str:
     # Change dir into workspace if necessary
     if CFG.workspace_path not in current_dir:
         os.chdir(CFG.workspace_path)
-
+ 
+    command_line = command_line.replace('\n','') #\n in cmd cause json issue
     print(f"Executing command '{command_line}' in working directory '{os.getcwd()}'")
 
     result = subprocess.run(command_line, capture_output=True, shell=True)
-    output = f"STDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}"
-
+    stdout = result.stdout.decode("utf-8")
+    stderr = result.stderr.decode("utf-8")
+    output = f"STDOUT:\n{stdout}\nSTDERR:\n{stderr}"
+    
     # Change back to whatever the prior working dir was
 
     os.chdir(current_dir)
+    return output
 
 
 @command(
