@@ -121,7 +121,7 @@ class RedisMemory(MemoryProviderSingleton):
         self.redis.flushall()
         return "Obliviated"
 
-    def get_relevant(self, data: str, num_relevant: int = 5) -> list[Any] | None:
+    def get_relevant(self, data: str, num_relevant: int = 8) -> list[Any] | None:
         """
         Returns all the data in the memory that is relevant to the given data.
         Args:
