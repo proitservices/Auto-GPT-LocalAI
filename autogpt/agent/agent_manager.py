@@ -125,9 +125,13 @@ class AgentManager(metaclass=Singleton):
         Returns:
             A list of tuples of the form (key, task)
         """
-
+        if not self.agents:
+            return [("status","No agents available")]
         # Return a list of agent keys and their tasks
-        return [(key, task) for key, (task, _, _) in self.agents.items()]
+        agent_list = [(key, task) for key, (task, _, _) in self.agents.items()]
+        agent_str = "\n".join([f"{key}: {task}" for key, task in agent_list])
+
+        return [("List of agents:",agent_str)]
 
     def delete_agent(self, key: str | int) -> bool:
         """Delete an agent from the agent manager

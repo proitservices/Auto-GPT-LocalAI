@@ -229,6 +229,8 @@ def search_files(directory: str) -> list[str]:
     CFG.allow_downloads,
     "Error: You do not have user authorization to download files locally.",
 )
+
+
 def download_file(url, filename):
     """Downloads a file
     Args:
@@ -266,3 +268,32 @@ def download_file(url, filename):
         return f"Got an HTTP Error whilst trying to download file: {e}"
     except Exception as e:
         return "Error: " + str(e)
+
+
+@command("write_to_csv", "Write to CSV file", '"filename": "<filename>", "data": [<\"value_according_to_header\">, <\"value_according_to_header\">, ...]')
+def write_to_csv(filename: str, data: List[Dict[str, Any]]) -> str:
+    """Write data to a CSV file
+
+    Args:
+    filename (str): The name of the file to write to
+        data (List[Dict[str, Any]]): The data to write to the file in the form of a list of dictionaries
+
+    Returns:
+        str: A message indicating success or failure
+    """
+    if check_duplicate_operation("write", filename):
+        return "Error: File has already been updated."
+    try:
+        directory = os.path.dirname(filename)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        with open(filename, "w", newline="", encoding="utf-8") as csvfile:
+            fieldnames = data[0].keys()
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            for row in data:
+                writer.writerow(row)
+            log_operation("write", filename)
+            return "CSV file written to successfully."
+    except Exception as e:
+        return f"Error: {str(e)}"

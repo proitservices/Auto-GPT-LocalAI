@@ -14,11 +14,9 @@ CFG = Config()
 @command("google", "Google Search", '"query": "<query>"', not CFG.google_api_key)
 def google_search(query: str, num_results: int = 8) -> str:
     """Return the results of a Google search
-
     Args:
         query (str): The search query.
         num_results (int): The number of results to return.
-
     Returns:
         str: The results of the search.
     """
@@ -38,7 +36,7 @@ def google_search(query: str, num_results: int = 8) -> str:
 
 
 @command(
-    "google",
+    "google_official",
     "Google Search",
     '"query": "<query>"',
     bool(CFG.google_api_key),
@@ -46,11 +44,9 @@ def google_search(query: str, num_results: int = 8) -> str:
 )
 def google_official_search(query: str, num_results: int = 8) -> str | list[str]:
     """Return the results of a Google search using the official Google API
-
     Args:
         query (str): The search query.
         num_results (int): The number of results to return.
-
     Returns:
         str: The results of the search.
     """
@@ -101,16 +97,14 @@ def google_official_search(query: str, num_results: int = 8) -> str | list[str]:
 def safe_google_results(results: str | list) -> str:
     """
         Return the results of a google search in a safe format.
-
     Args:
         results (str | list): The search results.
-
     Returns:
         str: The results of the search.
     """
     if isinstance(results, list):
         safe_message = json.dumps(
-            [result.encode("utf-8", "ignore") for result in results]
+            [result.encode("utf-8", "ignore").decode("utf-8") for result in results]
         )
     else:
         safe_message = results.encode("utf-8", "ignore").decode("utf-8")
