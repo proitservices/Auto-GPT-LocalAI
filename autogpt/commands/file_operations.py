@@ -4,7 +4,7 @@ from __future__ import annotations
 import os
 import os.path
 from typing import Generator
-
+import glob
 import requests
 from colorama import Back, Fore
 from requests.adapters import HTTPAdapter, Retry
@@ -198,28 +198,39 @@ def delete_file(filename: str) -> str:
         return f"Error: {str(e)}"
 
 
-@command("search_files", "Search Files", '"directory": "<directory>"')
-def search_files(directory: str) -> list[str]:
+@command("search_files", "Search Files", '{"directory": "<directory>", "query": "<query>"}')
+def search_files(directory: str, query: str = "*") -> list[str]:
     """Search for files in a directory
 
     Args:
         directory (str): The directory to search in
+        query (str): The search pattern for files, defaults to "*"
 
     Returns:
         list[str]: A list of files found in the directory
     """
     found_files = []
 
-    for root, _, files in os.walk(directory):
-        for file in files:
-            if file.startswith("."):
-                continue
-            relative_path = os.path.relpath(
-                os.path.join(root, file), CFG.workspace_path
-            )
-            found_files.append(relative_path)
+    search_path = os.path.join(directory, query)
+    for filepath in glob.glob(search_path, recursive=True):
+        file = Path(filepath)
+        if file.is_file() and not file.name.startswitch("."):
+            relative_path = os.path.relpath(filepath, CFG.workspace_path)
+            fount_files.append(relative_path)
 
     return found_files
+#    found_files = []
+#
+#    for root, _, files in os.walk(directory):
+#        for file in files:
+#            if file.startswith("."):
+#                continue
+#            relative_path = os.path.relpath(
+#                os.path.join(root, file), CFG.workspace_path
+#            )
+#            found_files.append(relative_path)
+#
+#    return found_files
 
 
 @command(

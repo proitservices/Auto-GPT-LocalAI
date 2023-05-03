@@ -29,6 +29,10 @@ def build_default_prompt_generator() -> PromptGenerator:
         " immediately save important information to files."
     )
     prompt_generator.add_constraint(
+        "local_gpt is a language model you can use for generating code, generating and evaluating ideas."
+        "local_gpt can help with tasks you are working on but has no access to local file system"
+    )
+    prompt_generator.add_constraint(
         "If you are unsure how you previously did something or want to recall past"
         " events, thinking about similar events will help you remember."
     )
@@ -36,6 +40,8 @@ def build_default_prompt_generator() -> PromptGenerator:
     prompt_generator.add_constraint(
         'Exclusively use the commands listed in double quotes e.g. "command name"'
     )
+    prompt_generator.add_constraint(
+            "check file size before using read file, if it's more than 4000 words use local_gpt_read_file to summarize for you ")
 
     # Define the command list
     commands = [
@@ -69,7 +75,11 @@ def build_default_prompt_generator() -> PromptGenerator:
         "Reflect on past decisions and strategies to refine your approach."
     )
     prompt_generator.add_performance_evaluation(
-        "Every command has a cost, so be smart and efficient. Aim to complete tasks in"
+            "update your task_list.txt with STATUS and review it to stay focused on your work"
+            "inform Peter by sending an email to p.metatrade@gmail.com each time a task is complete or new subtasks emerge"
+    )
+    prompt_generator.add_performance_evaluation(
+        "Every command has a cost of £0.002, so be smart and efficient. Aim to complete tasks in"
         " the least number of steps."
     )
     prompt_generator.add_performance_evaluation("Write all code to a file.")

@@ -1,7 +1,7 @@
 import functools
 import importlib
 import inspect
-from typing import Any, Callable, Optional
+from typing import Any, Callable, Optional, Dict
 
 # Unique identifier for auto-gpt commands
 AUTO_GPT_COMMAND_IDENTIFIER = "auto_gpt_command"
@@ -66,15 +66,9 @@ class CommandRegistry:
             del self.commands[command_name]
         else:
             raise KeyError(f"Command '{command_name}' not found in registry.")
-
-    def reload_commands(self) -> None:
-        """Reloads all loaded command plugins."""
-        for cmd_name in self.commands:
-            cmd = self.commands[cmd_name]
-            module = self._import_module(cmd.__module__)
-            reloaded_module = self._reload_module(module)
-            if hasattr(reloaded_module, "register"):
-                reloaded_module.register(self)
+    
+    def get_instance(self):
+        return self
 
     def get_command(self, name: str) -> Callable[..., Any]:
         return self.commands[name]

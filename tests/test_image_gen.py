@@ -88,7 +88,7 @@ class TestImageGen(unittest.TestCase):
                 extra={"seed": 123},
             )
         )
-        image_path = path_in_workspace(result)
+        image_path = os.path.join(cfg.workspace_path,result) #path_in_workspace(result)
         with Image.open(image_path) as img:
             self.assertEqual(img.size, (64, 64))
             neg_image_hash = hashlib.md5(img.tobytes()).hexdigest()
@@ -100,7 +100,7 @@ class TestImageGen(unittest.TestCase):
                 "astronaut riding a horse", image_size=64, size=1, extra={"seed": 123}
             )
         )
-        image_path = path_in_workspace(result)
+        image_path = os.path.join(cfg.workspace_path,result) # path_in_workspace(result)
         with Image.open(image_path) as img:
             self.assertEqual(img.size, (64, 64))
             image_hash = hashlib.md5(img.tobytes()).hexdigest()

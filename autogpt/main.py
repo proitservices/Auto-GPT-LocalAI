@@ -12,6 +12,7 @@ from autogpt.configurator import create_config
 from autogpt.logs import logger
 from autogpt.memory import get_memory
 from autogpt.plugins import scan_plugins
+#from autogpt.commands.command_reload import reload_commands
 from autogpt.prompts.prompt import construct_main_ai_config
 from autogpt.utils import get_current_git_branch, get_latest_bulletin
 from autogpt.workspace import Workspace
@@ -38,6 +39,7 @@ def run_auto_gpt(
     logger.set_level(logging.DEBUG if debug else logging.INFO)
     logger.speak_mode = speak
 
+    global cfg 
     cfg = Config()
     # TODO: fill in llm values here
     check_openai_api_key()
@@ -103,6 +105,7 @@ def run_auto_gpt(
 
     cfg.set_plugins(scan_plugins(cfg, cfg.debug_mode))
     # Create a CommandRegistry instance and scan default folder
+    global command_registry #03052023
     command_registry = CommandRegistry()
     command_registry.import_commands("autogpt.commands.local_gpt")
     command_registry.import_commands("autogpt.commands.vicuna_gpt")
@@ -117,6 +120,7 @@ def run_auto_gpt(
     command_registry.import_commands("autogpt.commands.twitter")
     command_registry.import_commands("autogpt.commands.web_selenium")
     command_registry.import_commands("autogpt.commands.write_tests")
+    command_registry.import_commands("autogpt.commands.command_reload")
     command_registry.import_commands("autogpt.app")
 
     ai_name = ""
@@ -154,3 +158,12 @@ def run_auto_gpt(
         workspace_directory=workspace_directory,
     )
     agent.start_interaction_loop()
+
+
+def reload_commands() -> str: #03052023
+    response = command_registry["reload_command"]["func"](command_registry)
+    if "message" in response:
+        return response["message"]
+    else:
+        return "An error occured while reloading commands."
+    return "Commands reloaded successfully."

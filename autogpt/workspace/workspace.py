@@ -8,13 +8,13 @@ agent.
 
 """
 from __future__ import annotations
-
+import os
 from pathlib import Path
 
 
 class Workspace:
     """A class that represents a workspace for an AutoGPT agent."""
-
+    workspace_path = None  
     NULL_BYTES = ["\0", "\000", "\x00", r"\z", "\u0000", "%00"]
 
     def __init__(self, workspace_root: str | Path, restrict_to_workspace: bool):
@@ -49,9 +49,10 @@ class Workspace:
         # TODO: have this make the env file and ai settings file in the directory.
         workspace_directory = cls._sanitize_path(workspace_directory)
         workspace_directory.mkdir(exist_ok=True, parents=True)
-        print(workspace_directory)
-        return workspace_directory
+        cls.workspace_path = workspace_directory
 
+        return workspace_directory
+    
     def get_path(self, relative_path: str | Path) -> Path:
         """Get the full path for an item in the workspace.
 

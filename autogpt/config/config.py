@@ -20,13 +20,13 @@ class Config(metaclass=Singleton):
 
     def __init__(self) -> None:
         """Initialize the Config class"""
-        self.workspace_path = None
-        self.file_logger_path = "./file_logger.txt"
+        self.workspace_path = '/home/bot/Auto-GPT-LocalAI/autogpt/auto_gpt_workspace'
+        self.file_logger_path = "file_logger.txt"
 
         self.debug_mode = False
         self.continuous_mode = False
         self.continuous_limit = 0
-        self.speak_mode = False
+        self.speak_mode = True
         self.skip_reprompt = False
         self.allow_downloads = True #28042023 PR
         self.skip_news = False
